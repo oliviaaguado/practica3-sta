@@ -21,11 +21,18 @@ export default function Pelicula({ pelicula, actores }) {
         <div className="pelicula">
         <h2 className="titulo">{pelicula.nombre}</h2>
 
+            {/* Imagen de portada */}
+        <img
+            src={pelicula.portada} // puede ser URL o archivo local en /public/images/
+            alt={`Portada de ${pelicula.nombre}`}
+            className="portada"
+        />
+
       {mostrarInfo && (
         <>
-          <p className="anio">Año de publicación: {pelicula.anioPublicacion}</p>
+          <p className="anio"><strong>Año de publicación:</strong> {pelicula.anioPublicacion}</p>
           <p className="actores">
-            Actores principales:{" "}
+            <strong>Actores Principales:</strong>{" "}
             {actoresPrincipales.map(a => a.nombre).join(", ")}
           </p>
         </>

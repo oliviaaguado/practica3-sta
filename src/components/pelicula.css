@@ -27,3 +27,16 @@
 .boton:hover {
   background-color: #0056b3;
 }
+
+
+/* Cambio el color del texto que aparece al hacer click al botón*/
+
+.anio {
+  margin-top: 10px;
+  color: #555;      /* color por defecto */
+}
+
+.actores {
+  margin-top: 5px;
+  color: #555;   /* color para actores */
+}
