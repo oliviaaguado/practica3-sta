@@ -2,6 +2,7 @@
 // useState permite guardar datos o variables que cambian con el tiempo
 import { useEffect, useState } from 'react';
 import './App.css';
+import Pelicula from "./components/pelicula";
 
 // App es el componente principal, el que React muestra en pantalla
 function App() {
@@ -20,24 +21,22 @@ function App() {
       .catch((err) => console.error("Error al cargar películas", err));
   }, []);
 
-  return (
-    // Recorre las películas y las muestra en una lista
-    <div className="app">
-      <h1>🎥 Lista de Películas</h1>
+return (
+  <div className="App">
+    <h1>🎥 Catálogo de Películas</h1>
 
-      {peliculas.length === 0 ? (
-        <p>No hay películas disponibles</p>
-      ) : (
-        <ul>
-          {peliculas.map((p) => (
-            <li key={p.id}>
-              <strong>{p.nombre}</strong> ({p.anioPublicacion})
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+    {peliculas.length === 0 ? (
+      <p>Cargando películas...</p>
+    ) : (
+      <div className="peliculas-container">
+        {peliculas.map((peli) => (
+          <Pelicula key={peli.id} pelicula={peli} />
+        ))}
+      </div>
+    )}
+  </div>
+);
+
 }
 
 export default App;
