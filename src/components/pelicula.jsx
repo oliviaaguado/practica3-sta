@@ -23,9 +23,9 @@ export default function Pelicula({ pelicula, actores }) {
 
       {mostrarInfo && (
         <>
-          <p className="anio">Año de publicación: {pelicula.anioPublicacion}</p>
+          <p className="anio"><strong>Año de publicación:</strong> {pelicula.anioPublicacion}</p>
           <p className="actores">
-            Actores principales:{" "}
+            <strong>Actores Principales:</strong>{" "}
             {actoresPrincipales.map(a => a.nombre).join(", ")}
           </p>
         </>
