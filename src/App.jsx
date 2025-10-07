@@ -2,49 +2,70 @@
 // useState permite guardar datos o variables que cambian con el tiempo
 import { useEffect, useState } from 'react';
 import './App.css';
-import Pelicula from "./components/pelicula";
+import Category from "./components/category";   // ⬅️ usa el Category
+// Si tu Category está en otra ruta, ajusta el import
 
-// App es el componente principal, el que React muestra en pantalla
 function App() {
-  // useState([]) --> crea un estado para guardar las películas descargadas
-  // peliculas --> variable de estado (guardamos la lista de películas que vienen del servidor)
-  // setPeliculas --> función que actualiza ese estado
   const [peliculas, setPeliculas] = useState([]);
   const [actores, setActores] = useState([]);
+  const [categorias, setCategorias] = useState([]); // ⬅️ aquí guardamos los grupos
 
-  // Petición GET a nuestra API
-  // Este bloque se ejecuta automáticamente al cargar la página
   useEffect(() => {
     // Llamada a la API para obtener las películas
     fetch("http://localhost:3000/peliculas")
       .then((res) => res.json())
-      // Guarda los datos obtenidos en el estado
-      .then((data) => setPeliculas(data))
+      .then((data) => {
+        setPeliculas(data);
+
+        // ======= AGRUPAR POR CATEGORÍA/GENERO =======
+        // Usamos la propiedad 'categoria' si existe; si no, probamos 'genero'; si no, 'Todas'
+        const grupos = data.reduce((acc, p) => {
+          const key = p.categoria || p.genero || "Todas";
+          if (!acc[key]) acc[key] = [];
+          // Normaliza mínimamente campos que Category/Pelicula esperan
+          acc[key].push({
+            id: p.id,
+            titulo: p.titulo || p.nombre || p.title,
+            director: p.director,
+            anio: p.anio || p.year,
+            actores: p.actores,    // por si tu Pelicula lo usa
+            ...p                   // conserva el resto de campos
+          });
+          return acc;
+        }, {});
+
+        // Array [{ title, movies }]
+        const cats = Object.entries(grupos).map(([title, movies]) => ({ title, movies }));
+        setCategorias(cats);
+      })
       .catch((err) => console.error("Error al cargar películas", err));
 
-    // Llamada a la API para obtener los actores  
+    // Llamada a la API para obtener los actores
     fetch("http://localhost:3000/actores")
       .then(res => res.json())
       .then(data => setActores(data))
       .catch(err => console.error("Error al cargar actores", err));
   }, []);
 
-return (
-  <div className="App">
-    <h1>🎥 Catálogo de Películas</h1>
+  return (
+    <div className="App">
+      <h1>🎥 Catálogo de Películas</h1>
 
-    {peliculas.length === 0 ? (
-      <p>Cargando películas...</p>
-    ) : (
-      <div className="peliculas-container">
-        {peliculas.map((peli) => (
-          <Pelicula key={peli.id} pelicula={peli} actores={actores} />
-        ))}
-      </div>
-    )}
-  </div>
-);
-
+      {categorias.length === 0 ? (
+        <p>Cargando películas...</p>
+      ) : (
+        // Pintamos UNA categoría por grupo (con carrusel horizontal)
+        categorias.map(cat => (
+          <Category
+            key={cat.title}
+            title={cat.title}
+            movies={cat.movies}
+            actores={actores}    // ⬅️ pásalo para que llegue a <Pelicula />
+          />
+        ))
+      )}
+    </div>
+  );
 }
 
 export default App;
