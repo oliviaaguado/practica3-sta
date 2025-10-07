@@ -10,15 +10,23 @@ function App() {
   // peliculas --> variable de estado (guardamos la lista de películas que vienen del servidor)
   // setPeliculas --> función que actualiza ese estado
   const [peliculas, setPeliculas] = useState([]);
+  const [actores, setActores] = useState([]);
 
   // Petición GET a nuestra API
   // Este bloque se ejecuta automáticamente al cargar la página
   useEffect(() => {
+    // Llamada a la API para obtener las películas
     fetch("http://localhost:3000/peliculas")
       .then((res) => res.json())
       // Guarda los datos obtenidos en el estado
       .then((data) => setPeliculas(data))
       .catch((err) => console.error("Error al cargar películas", err));
+
+    // Llamada a la API para obtener los actores  
+    fetch("http://localhost:3000/actores")
+      .then(res => res.json())
+      .then(data => setActores(data))
+      .catch(err => console.error("Error al cargar actores", err));
   }, []);
 
 return (
@@ -30,7 +38,7 @@ return (
     ) : (
       <div className="peliculas-container">
         {peliculas.map((peli) => (
-          <Pelicula key={peli.id} pelicula={peli} />
+          <Pelicula key={peli.id} pelicula={peli} actores={actores} />
         ))}
       </div>
     )}

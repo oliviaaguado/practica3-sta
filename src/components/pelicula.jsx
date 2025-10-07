@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import "./Pelicula.css";
 
-export default function Pelicula({ pelicula }) {
+export default function Pelicula({ pelicula, actores }) {
   
     // Variable de estado que inicialmente es false, por lo que la primera vez no se mostrará el año de publicación
     const[mostrarInfo, setMostrarInfo] = useState(false);
@@ -11,18 +11,29 @@ export default function Pelicula({ pelicula }) {
     const toggleInfo = () => {
         setMostrarInfo(!mostrarInfo);
     };
+
+    // Filtro los actores que pertenecen a esta película
+    const actoresPrincipales = actores.filter(actor =>
+        pelicula.actores.includes(actor.id)
+    );
   
-  return (
-    <div className="pelicula">
-      <h2 className="titulo">{pelicula.nombre}</h2>
+    return (
+        <div className="pelicula">
+        <h2 className="titulo">{pelicula.nombre}</h2>
 
       {mostrarInfo && (
-        <p className="anio">Año de publicación: {pelicula.anioPublicacion}</p>
+        <>
+          <p className="anio">Año de publicación: {pelicula.anioPublicacion}</p>
+          <p className="actores">
+            Actores principales:{" "}
+            {actoresPrincipales.map(a => a.nombre).join(", ")}
+          </p>
+        </>
       )}
 
-      <button className="boton" onClick={toggleInfo}>
-        {mostrarInfo ? "Menos información" : "Más información"}
-      </button>
-    </div>
-  );
+        <button className="boton" onClick={toggleInfo}>
+            {mostrarInfo ? "Menos información" : "Más información"}
+        </button>
+        </div>
+    );
 }
