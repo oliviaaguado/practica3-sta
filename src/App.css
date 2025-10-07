@@ -1,60 +1,193 @@
-#root {
-  max-width: 1280px;
+/************************************************************
+ *  Variables y reset
+ ************************************************************/
+:root{
+  --bg: #0f172a;           /* fondo general (pizarra)    */
+  --text: #e2e8f0;         /* texto principal            */
+  --muted: #cbd5e1;        /* texto secundario           */
+  --card: #111827;         /* fondo tarjeta              */
+  --card-border: #1f2937;  /* borde tarjeta              */
+  --accent: #94a3b8;       /* botones y acentos          */
+  --accent-contrast:#0f172a;
+  --ring:#38bdf8;          /* foco accesible             */
+
+  --radius: 12px;
+  --container: 1200px;
+
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-24: 24px;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/************************************************************
+ *  Contenedor principal de tu App.jsx
+ *  (coincide con <div className="App">)
+ ************************************************************/
+.App{
+  max-width: var(--container);
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: var(--space-6);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+/* Título principal */
+.App > h1{
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-24);
+  font-weight: 800;
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+/* Mensaje de carga */
+.App > p{
+  margin: var(--space-5) 0;
+  color: var(--muted);
+  font-size: var(--fs-18);
 }
 
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/************************************************************
+ *  Grid con las películas (peliculas-container)
+ *  Responsive: se adapta al ancho disponible
+ ************************************************************/
+/*.peliculas-container{
+  display: grid;
+  gap: var(--space-4);
+  /* auto-fit crea tantas columnas como quepan; minmax define ancho mínimo de tarjeta */
+ /* grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}*/
+
+/*Si prefieres carrusel horizontal en lugar de grid, usa esto:*/
+.peliculas-container{
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 220px;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+  scrollbar-width: thin;
+}
+.peliculas-container::-webkit-scrollbar{ height: 8px; }
+.peliculas-container::-webkit-scrollbar-thumb{
+  background: #334155; border-radius: 8px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-/* 🔹 NUEVO: Contenedor de películas */
-.peliculas-container {
+/************************************************************
+ *  Estilos sugeridos para el componente <Pelicula />
+ *  NO son obligatorios, pero te dan una tarjeta bonita
+ *  Si tu componente raíz tiene className="pelicula", se aplican automáticamente.
+ ************************************************************/
+.pelicula{
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
   display: flex;
-  flex-wrap: wrap;            /* permite que las tarjetas bajen si no caben */
-  justify-content: center;    /* centra horizontalmente */
-  gap: 20px;                  /* espacio entre las tarjetas */
-  margin-top: 2rem;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
 }
 
-/* Opcional: ajusta las tarjetas dentro del flex */
-.pelicula {
-  flex: 1 1 250px;            /* base de 250px, pero flexible */
-  max-width: 300px;
-  box-sizing: border-box;
+.pelicula:hover{
+  transform: translateY(-2px);
+  border-color: #334155;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* Título dentro de la tarjeta (si usas un <h3>) */
+.pelicula h3{
+  margin: 0;
+  font-size: var(--fs-16);
+  font-weight: 800;
+}
+
+/* Bloque de detalles: director, año, etc. */
+.pelicula__details{
+  font-size: var(--fs-14);
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* Botón de “Más/Menos información” (si le pones esta clase) */
+.pelicula__btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  appearance: none;
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 10px;
+
+  font-weight: 700;
+  font-size: var(--fs-14);
+  letter-spacing: 0.2px;
+
+  background: var(--accent);
+  color: var(--accent-contrast);
+  cursor: pointer;
+
+  transition: filter 120ms ease, transform 60ms ease, box-shadow 120ms ease;
+}
+
+.pelicula__btn:hover{ filter: brightness(1.05); }
+.pelicula__btn:active{ transform: translateY(1px) scale(0.99); }
+.pelicula__btn:focus-visible{
+  outline: 0;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 60%, transparent);
+}
+
+/************************************************************
+ *  Utilidades y responsive
+ ************************************************************/
+/* Estado de error/carga centralizado (si lo necesitas) */
+.center-state{
+  min-height: 40vh;
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-18);
+  color: var(--muted);
+}
+
+/* Tarjeta skeleton opcional (añade className="pelicula skeleton") */
+.skeleton{
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #0b1222 25%, #131a2d 37%, #0b1222 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+@keyframes shimmer{
+  0%   { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Animaciones reducidas si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* Ajustes móviles: un poco menos de padding */
+@media (max-width: 480px){
+  .App{ padding: 16px; }
 }
