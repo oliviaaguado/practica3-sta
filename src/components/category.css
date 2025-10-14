@@ -1,8 +1,10 @@
 
-
+/* No tocar el fondo global desde category */
+body { background: inherit !important; }
+.category, .category__row { background: transparent; }
 :root { font-family: system-ui, Arial, sans-serif; }
 * { box-sizing: border-box; }
-body { margin: 0; background: #0f172a; color: #e2e8f0; }
+body { margin: 0; background: #0f172a; color: #2d6fc6; }
 
 .app { padding: 24px; max-width: 1200px; margin: 0 auto; }
 

@@ -191,3 +191,44 @@ body{
 @media (max-width: 480px){
   .App{ padding: 16px; }
 }
+/* --- Unifica el tamaño de las tarjetas y las imágenes --- */
+
+/* Define una altura máxima igual para todas las tarjetas */
+/* --- Tarjeta flexible que se adapta al contenido --- */
+.pelicula {
+  width: 220px;
+  min-height: 420px;           /* altura mínima, pero puede crecer */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* deja crecer el contenido hacia abajo */
+  background: #111827;
+  border-radius: 12px;
+  padding: 12px;
+  overflow: visible;           /* permite que se expanda */
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+
+/* Imagen centrada y recortada proporcionalmente */
+.pelicula img {
+  width: 100%;
+  height: 280px;               /* altura fija para todas las imágenes */
+  object-fit: cover;           /* recorta sin deformar */
+  border-radius: 8px;
+  background: #0f172a;         /* evita el flash blanco de carga */
+}
+
+/* Título */
+.pelicula h3 {
+  margin: 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Botón al fondo de la tarjeta */
+.pelicula__btn {
+  margin-top: auto;            /* empuja hacia abajo */
+  align-self: stretch;         /* ocupa todo el ancho */
+}
